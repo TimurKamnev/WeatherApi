@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "../src/components/desctop.scss";
+import "./style.css";
+import "swiper/scss";
+import "swiper/scss/effect-coverflow";
+import "swiper/scss/navigation";
+import "swiper/scss/pagination";
+import WeatherCard from "./components/weather-card";
+import WeatherBody from "./components/weather-body";
+import { Weather } from "./Types/Weather";
 
-function App() {
+function Desctop() {
+  const [weather, setWeather] = useState<Weather | null>(null);
+
+  // GeneralBackground
+  const getBackgroundClass = () => {
+    if (weather?.weather && weather.weather[0]) {
+      const weatherType = weather.weather[0].main.toLowerCase();
+      if (weatherType === "rain") {
+        return "rain-background";
+      } else if (weatherType === "snow") {
+        return "snow-background";
+      } else if (weatherType === "mist" || weatherType === "drizzle") {
+        return "mist-background";
+      }
+      else if (weatherType === "smoke") {
+        return "smoke-background";
+      }
+    }
+    return "default-background";
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`container ${getBackgroundClass()}`}>
+      <div className="weather-card">
+        <WeatherCard
+          weatherState={weather}
+          onWeatherUpdate={(weather) => setWeather(weather)}
+        />
+      </div>
+      <div className="weather-body">
+        <WeatherBody weatherState={weather} onWeatherUpdate={setWeather} />
+      </div>
     </div>
   );
 }
 
-export default App;
+export default Desctop;

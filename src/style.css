@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+button, a {
+  cursor: pointer;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+a, li {
+  text-decoration: none;
+  list-style-type: none;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+}
+
+.rain-background {
+  background-image: url("../public/rain_weather.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.snow-background {
+  background-image: url("../public/snow_clouds.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.mist-background {
+  background-image: url("../public/mist_weather.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.smoke-background {
+  background-image: url("../public/smoke_weather.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.default-background {
+  height: 100%;
+  min-height: 100vh;
+  background-color: #D69E36;
+}
