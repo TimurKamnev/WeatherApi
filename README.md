@@ -1,5 +1,9 @@
 # Getting Started with Create React App
 
+Hello I created a new weather app and I'll improve a lot of things like adding a chart graph,
+by adding real days sensor/ new page etc. I saw that chalange 2 days ago, so on that point I
+made a prototype of Weather app and in soon I'll add more features to be comfortable visiting my
+Weather App!
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
