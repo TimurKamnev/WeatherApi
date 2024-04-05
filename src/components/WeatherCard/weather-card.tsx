@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Weather } from "../Types/Weather";
-import { WeatherCardProps } from "../Types/WeatherProps";
+import React, { useState } from "react";
+import { Weather } from "../../Types/Weather";
+import { WeatherCardProps } from "../../Types/WeatherProps";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store/types";
+import { setWeather } from "../../store/WeatherSlice";
 
 const api = {
   key: "8c51daf75706bc85a02f3ade841d4145",
@@ -8,13 +11,14 @@ const api = {
 };
 
 export default function WeatherCard({
-  weatherState,
   onWeatherUpdate,
 }: WeatherCardProps) {
   const [open, isOpen] = useState<boolean>(false);
-  const [weather, setWeather] = useState<Weather | null>(null);
   const [search, setSearch] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  const weather = useSelector((state: RootState) => state.weather.data);
+  const dispatch = useDispatch();
 
   // ChangeCloudDependsOnWeather
   const getWeatherIcon = () => {
@@ -40,28 +44,23 @@ export default function WeatherCard({
       setError("Please enter a city name");
       return;
     }
-
     fetch(`${api.base}weather?q=${search}&units=metric&APPID=${api.key}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("City not found");
-        }
-        return res.json();
-      })
-      .then((result) => {
-        onWeatherUpdate(result);
-        setWeather(result);
-        setError(null);
-      })
-      .catch((error) => {
-        setError("City not found");
-        console.error("Error fetching weather data:", error);
-      });
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("City not found");
+          }
+          return res.json();
+        })
+        .then((result: Weather) => {
+          dispatch(setWeather(result)); // Установка погоды в хранилище
+          onWeatherUpdate(result); // Вызов колбэка для передачи погоды в родительский компонент
+          setError(null);
+        })
+        .catch((error) => {
+          setError("City not found");
+          console.error("Error fetching weather data:", error);
+        });
   };
-
-  useEffect(() => {
-    searchPressed();
-  }, []);
 
   return (
     <>
@@ -105,7 +104,7 @@ export default function WeatherCard({
           </div>
           <img className="logo-mob" src="./logo-fake.svg" alt="user-logo" />
         </div>
-        {weather && !error ? (
+        {weather ? (
           <>
             <h1>{weather.weather[0].main}</h1>
             <img className="mobile" src={getWeatherIcon()} alt="cloud-img" />

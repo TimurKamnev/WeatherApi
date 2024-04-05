@@ -1,27 +1,38 @@
 import { useEffect, useState } from "react";
+import { Weather } from "../../Types/Weather";
+import { WeatherCardProps } from "../../Types/WeatherProps";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Scrollbar, A11y } from "swiper/modules";
-import { Weather } from "../Types/Weather";
-import { WeatherCardProps } from "../Types/WeatherProps";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store/types";
 
 export default function WeatherBody({
-  weatherState,
   onWeatherUpdate,
 }: WeatherCardProps) {
-  const [weather, setWeather] = useState<Weather | null>(weatherState);
-  const [weatherType, setWeatherType] = useState("rain");
+  // const [weather, setWeather] = useState<Weather | null>(weathertate);
+
+  const weather = useSelector((state: RootState) => state.weather.data);
 
   const getButtonColor = () => {
-    if (weatherType === "rain") {
-      return "rain-color";
-    } else if (weatherType === "cloud") {
+    if (weather?.weather && weather.weather[0]) {
+      const weatherType = weather.weather[0].main.toLocaleLowerCase();
+      if (
+        weatherType === "rain" ||
+        weatherType === "mist" ||
+        weatherType === "drizzle" ||
+        weatherType === "smoke"
+      ) {
+        return "rain-color";
+      } else if (weatherType === "snow") {
+        return "snow-color";
+      }
       return "default-color";
     }
   };
 
   useEffect(() => {
-    setWeather(weatherState);
-  }, [weatherState]);
+    onWeatherUpdate(weather!);
+  }, [weather, onWeatherUpdate]);
 
   return (
     <>
@@ -30,7 +41,7 @@ export default function WeatherBody({
           <img src="./logo-fake.svg" alt="logo-icon" />
           <ul>
             <li>
-              <img src="./cloud-aside.svg" alt="cloud-icon" />
+              <img src="./cloud-image.svg" alt="cloud-icon" />
               weather
             </li>
             <li>
@@ -49,42 +60,18 @@ export default function WeatherBody({
         </div>
       </aside>
       <div className="weather-main">
-        <div className="weather-top">
-          <div className="weather-top-text">
-            <img src="./heart-icon.svg" alt="heart-icon" />
-            <h4>Activities in your area</h4>
-          </div>
-          <div className="weather-top-images">
-            <ul>
-              <li>
-                <img src="./first-close.svg" alt="location-icon" />
-                <p>2km away</p>
-              </li>
-              <li>
-                <img src="./second-close.svg" alt="location-icon" />
-                <p>1.5km away</p>
-              </li>
-              <li>
-                <img src="./third-close.svg" alt="location-icon" />
-                <p>3km away</p>
-              </li>
-              <li>
-                <img src="./fourth-close.svg" alt="location-icon" />
-                <p>500m away</p>
-              </li>
-            </ul>
-          </div>
-        </div>
         <div className="weather-bottom">
           <div className="weather-bottom-text">
             <img src="./clock.svg" alt="clock-icon" />
             <p>24-hour forecast</p>
           </div>
-          <div className="graph-image" />
-          <div className="button-lack">
-            <button className={getButtonColor()}>5-day forecast</button>
+            <div className="button-lack">
+            <button className={`default-color ${getButtonColor()}`}>
+              5-day forecast
+            </button>
           </div>
         </div>
+        <div className="graph">Graph</div>
       </div>
       <aside className="weather-right">
         <div className="weather-swiper">

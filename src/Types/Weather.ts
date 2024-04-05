@@ -15,4 +15,6 @@ export interface Weather {
   coord: {
     lat: string;
   };
+  day: string;
+  weatherIcon: string;
 }

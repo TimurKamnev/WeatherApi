@@ -1,12 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "../src/components/desctop.scss";
 import "./style.css";
 import "swiper/scss";
 import "swiper/scss/effect-coverflow";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
-import WeatherCard from "./components/weather-card";
-import WeatherBody from "./components/weather-body";
+import WeatherCard from "./components/WeatherCard/weather-card";
+import WeatherBody from "./components/WeatherBody/weather-body";
 import { Weather } from "./Types/Weather";
 
 function Desctop() {
@@ -22,9 +22,10 @@ function Desctop() {
         return "snow-background";
       } else if (weatherType === "mist" || weatherType === "drizzle") {
         return "mist-background";
-      }
-      else if (weatherType === "smoke") {
+      } else if (weatherType === "smoke") {
         return "smoke-background";
+      } else if (weatherType === "clouds" || weatherType === "clear") {
+        return "cloud-background";
       }
     }
     return "default-background";
